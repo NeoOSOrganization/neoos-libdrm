@@ -1,7 +1,9 @@
+# `toolchain` comes from the constants file build.sh generates and
+# passes as the FIRST --cross-file ($NEOOS_TOOLCHAIN).
 [binaries]
-c = '/home/neo/opt/cross-x86_64-neoos/bin/x86_64-neoos-linux-musl-gcc'
-ar = '/home/neo/opt/cross-x86_64-neoos/bin/x86_64-neoos-linux-musl-gcc-ar'
-strip = '/home/neo/opt/cross-x86_64-neoos/bin/x86_64-neoos-linux-musl-strip'
+c = toolchain / 'bin/x86_64-neoos-linux-musl-gcc'
+ar = toolchain / 'bin/x86_64-neoos-linux-musl-gcc-ar'
+strip = toolchain / 'bin/x86_64-neoos-linux-musl-strip'
 pkg-config = '/usr/bin/pkg-config'
 
 [host_machine]

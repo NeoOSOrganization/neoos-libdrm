@@ -9,8 +9,14 @@ if [ ! -f upstream/meson.build ]; then
     exit 1
 fi
 
+NEOOS_TOOLCHAIN="${NEOOS_TOOLCHAIN:-$HOME/opt/cross-x86_64-neoos}"
+
 mkdir -p "$PREFIX"
 rm -rf "$BUILD_TMP"
+# Machine-specific paths live in a generated constants file, not in the
+# checked-in cross-file.txt (which refers to them by name).
+CONSTANTS="$(pwd)/cross-constants.txt"
+printf "[constants]\ntoolchain = '%s'\n" "$NEOOS_TOOLCHAIN" > "$CONSTANTS"
 
 # NeoOS has no DRM/KMS subsystem at all -- this port exists purely to
 # satisfy Mesa's EGL/DRI2 frontend build-time requirement (see
@@ -20,6 +26,7 @@ rm -rf "$BUILD_TMP"
 # just finds no /dev/dri and returns zero devices -- correct real
 # behavior, not emulation, since NeoOS genuinely has no DRM devices.
 meson setup "$BUILD_TMP" upstream \
+    --cross-file="$CONSTANTS" \
     --cross-file="$(pwd)/cross-file.txt" \
     --prefix="$PREFIX" \
     --default-library=static \
